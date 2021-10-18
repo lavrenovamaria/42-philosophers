@@ -56,6 +56,10 @@ Other customers cannot enter the bathroom and have to wait until the customer wh
 * waiting line == queue
 * toilet key == any object (mutex) needed to access shared resources
 
+A mutex is a variable with initial values ​​of 1 and 0. A value of 1 means that the counter has a toilet key.
+
+When entering the critical section, a lock is applied to prevent other processes (threads) from accessing it, and the lock is unlocked when exiting the critical section.
+
 ## A semaphore is similar to a restaurant with multiple toilets, and at the entrance to the toilet there is an electronic sign indicating the number of empty toilets
 
 When all toilets are in use, the number on the electronic sign 0, and guests have to wait until the number on the signboard changes to 1.
@@ -67,3 +71,9 @@ In other words, semaphores achieve mutual exclusion using a single value that th
 * customers using the toilet == process (thread)
 * waiting line == queue
 * number of signboard == Some variable (semaphore) indicating the number of processes that can access shared resources
+
+A semaphore is a variable with an integer value. The number means the number of processes that can access the shared resource. Create the following structure to use the semaphore.
+
+* `semWait()` operation : Decreases the semaphore value. If the value becomes negative, the process that called semWait is blocked (locked). That is, if it is not negative, the process can continue.
+* `semSignal()` operation : Increases the semaphore value. If the value is negative, the processes blocked by the semWait operation are released.
+
