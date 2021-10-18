@@ -37,3 +37,21 @@ The task is to implement a program that solves this problem using `mutex` or `se
 | **sem_post**    | The semaphore is unlocked, the semaphore value is incremented, and all threads waiting on the semaphore are woken up.    | `int sem_post(sem_t *sem)`      | `#include <semaphore.h>`     |
 | **sem_wait**    | Lock the semaphore. If the current semaphore value is 0, the calling thread does `sem_wait()` not return until the call is aborted by a signal or locking the semaphore . If executed successfully, the `sem_post()` lock state is maintained until the lock is released with .    | `int sem_wait(sem_t *sem)`      | `#include <semaphore.h>`     |
 | **sem_unlink**    | Removes a named semaphore. If the current semaphore named by name is being referenced by any process, this function has no effect on that semaphore. If more than one process calls this function and the semaphore is open, `sem_close()` the removal of the semaphore is deferred until all referenced semaphores have been terminated, for example.    | `int sem_unlink(const char *name)`      | `#include <semaphore.h>`     |
+
+
+## Difference between mutex and semaphore
+
+Mutex and Semaphore are both techniques designed to achieve mutual exclusion of shared resources. In other words, it is the biggest task of concurrent programming, `a method for controlling (management) access to shared resources by multiple processes or threads,` and uses different methods as follows.
+
+`Mutex` - mutual exclusion technique based on an `object` owned by a process (thread).
+`Semaphore` - mutual exclusion technique in which a `counting variable value` indicating the number of processes (threads) that can access the current shared resource is placed
+
+## Mutex is like a restaurant with only one toilet
+
+To go to the bathroom, you need to get a key at the counter. If there is a key at the counter, it means that no one is in the bathroom and you can use that key to enter the bathroom.
+Other customers cannot enter the bathroom and have to wait until the customer who is using the bathroom has finished and returned the key to the counter.
+
+* toilet == shared resource
+* customers using the toilet == process (thread)
+* waiting line == queue
+* toilet key == any object (mutex) needed to access shared resources
