@@ -13,7 +13,7 @@ If all the philosophers were hungry and picked up the left forks at the same tim
 The task is to implement a program that solves this problem using `mutex` or `semaphore`
 
 | External functs.    | Description | Form | Header |
-| ---------- | --------- | ---------- | ---------- |
+| ------- | ------------- | ---------- | ---------- |
 | **memset**| `malloc() calloc()` initializes the memory allocated in or to a specific value. Usually, it is often used to initialize before doing any work. | `void *memset(void *s, int c, size_t n)`   | `#include <string.h>`  |
 | **printf**  | It is a standard output function of the C language, and it allows you to output various types of data in various formats.  | `int printf(const char *format, ...)`    | `#include <stdio.h>`   |
 | **malloc**   | Memory is dynamically allocated.   | `void *malloc(size_t size)`     | `#include <stdlib.h>`    |
