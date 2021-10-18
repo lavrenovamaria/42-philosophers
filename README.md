@@ -18,7 +18,7 @@ The task is to implement a program that solves this problem using `mutex` or `se
 | **printf**  | It is a standard output function of the C language, and it allows you to output various types of data in various formats.  | `int printf(const char *format, ...)`    | `#include <stdio.h>`   |
 | **malloc**   | Memory is dynamically allocated.   | `void *malloc(size_t size)`     | `#include <stdlib.h>`    |
 | **free**    | `malloc() calloc()`memory allocated by or is returned to the system.    | `void free(void *ptr)`      | `#include <stdlib.h>`     |
-| **write**  | open() Writes to a file opened with a function.  | ssize_t `write(int fd, const void *buf, size_t n)`    | `#include <unistd.h>`   |
+| **write**  | open() Writes to a file opened with a function.  | `ssize_t write(int fd, const void *buf, size_t n)`    | `#include <unistd.h>`   |
 | **usleep**   | Wait for a specified number of microseconds   | `int usleep(useconds_t microseconds)`     | `#include <unistd.h>`    |
 | **gettimeofday**    | Jan. 1, a function to get the seconds and microseconds that have elapsed since 1970    | `int gettimeofday(struct timeval *restrict tp, void *restrict tzp)`      | `#include <sys/time.h>`     |
 | **pthread_create**    | Create a thread    | `pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void *), void *arg)`      | `#include <pthread.h>`     |
@@ -29,3 +29,6 @@ The task is to implement a program that solves this problem using `mutex` or `se
 | **pthread_mutex_lock**    | (start critical section). Lock the mutex. If already locked, the calling thread blocks until a mutex is available.    | `int pthread_mutex_lock(pthread_mutex_t *mutex)`      | `#include <pthread.h>`     |
 | **pthread_mutex_unlock**    | (end critical section) If the mutex is locked, unlock it. Undefined behavior occurs when a mutex is not held by the calling thread.    | `int pthread_mutex_unlock(pthread_mutex_t *mutex)`      | `#include <pthread.h>`     |
 | **fork**    | Creates a copy process for the currently running process.    | `pid_t fork(void)`      | `#include <unistd.h>`     |
+| **kill**    | Unlike the kill command, which kills a process in the shell, it sends a signal to the process. Sending SIGKILL to a process acts like a shell command kill.    | `int kill(pid_t pid, int sig)`      | `#include <signal.h>`     |
+| **exit**    | Terminate the process.    | `void exit(int status)`      | `#include <stdlib.h>`     |
+| **waitpid**    | `wait()` Like a function, it waits until the child process exits. The difference is that the `wait()` function is released from the wait when any of the child processes exit, but waits `waitpid()` until the specific child process exits.    | `pid_t waitpid(pid_t pid, int *status, int options)`      | `#include <sys/wait.h>`     |
