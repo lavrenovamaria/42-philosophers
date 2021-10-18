@@ -55,3 +55,15 @@ Other customers cannot enter the bathroom and have to wait until the customer wh
 * customers using the toilet == process (thread)
 * waiting line == queue
 * toilet key == any object (mutex) needed to access shared resources
+
+## A semaphore is similar to a restaurant with multiple toilets, and at the entrance to the toilet there is an electronic sign indicating the number of empty toilets
+
+When all toilets are in use, the number on the electronic sign 0, and guests have to wait until the number on the signboard changes to 1.
+Customers who have finished their duties give +1 to the number on the electronic sign board when they leave the bathroom, and customers who have been waiting can use the bathroom after giving -1 to this number.
+
+In other words, semaphores achieve mutual exclusion using a single value that they manage in common.
+
+* toilet == shared resource
+* customers using the toilet == process (thread)
+* waiting line == queue
+* number of signboard == Some variable (semaphore) indicating the number of processes that can access shared resources
