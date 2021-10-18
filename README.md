@@ -23,9 +23,8 @@ The task is to implement a program that solves this problem using `mutex` or `se
 | **gettimeofday**    | Jan. 1, a function to get the seconds and microseconds that have elapsed since 1970    | `int gettimeofday(struct timeval *restrict tp, void *restrict tzp)`      | `#include <sys/time.h>`     |
 | **pthread_create**    | Create a thread    | `pthread_create(pthread_t *thread, const pthread_attr_t *attr, void *(*start_routine)(void *), void *arg)`      | `#include <pthread.h>`     |
 | **pthread_detach**    | Isolate a specific thread    | `int pthread_detach(pthread_t thread)`      | `#include <pthread.h>`     |
-| **pthread_join**    | Waiting for a specific thread to exit.
-The joined thread (thread terminated) releases all resources.    | `int pthread_join(pthread_t thread, void **value_ptr)`      | `#include <pthread.h>`     |
-| **pthread_mutex_init**    | Create a mutex    | `int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr)`      | #include <pthread.h>     |
+| **pthread_join**    | Waiting for a specific thread to exit. The joined thread (thread terminated) releases all resources.    | `int pthread_join(pthread_t thread, void **value_ptr)`      | `#include <pthread.h>`     |
+| **pthread_mutex_init**    | Create a mutex    | `int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr)`      | `#include <pthread.h>`     |
 
 
 
