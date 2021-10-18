@@ -25,7 +25,7 @@ The task is to implement a program that solves this problem using `mutex` or `se
 | **pthread_detach**    | Isolate a specific thread    | `int pthread_detach(pthread_t thread)`      | `#include <pthread.h>`     |
 | **pthread_join**    | Waiting for a specific thread to exit. The joined thread (thread terminated) releases all resources.    | `int pthread_join(pthread_t thread, void **value_ptr)`      | `#include <pthread.h>`     |
 | **pthread_mutex_init**    | Create a mutex    | `int pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr)`      | `#include <pthread.h>`     |
-
-
-
-
+| **pthread_mutex_destroy**    | Releases (returns) the allocated mutex.    | `int pthread_mutex_destroy(pthread_mutex_t *mutex)`      | `#include <pthread.h>`     |
+| **pthread_mutex_lock**    | (start critical section). Lock the mutex. If already locked, the calling thread blocks until a mutex is available.    | `int pthread_mutex_lock(pthread_mutex_t *mutex)`      | `#include <pthread.h>`     |
+| **pthread_mutex_unlock**    | (end critical section) If the mutex is locked, unlock it. Undefined behavior occurs when a mutex is not held by the calling thread.    | `int pthread_mutex_unlock(pthread_mutex_t *mutex)`      | `#include <pthread.h>`     |
+| **fork**    | Creates a copy process for the currently running process.    | `pid_t fork(void)`      | `#include <unistd.h>`     |
