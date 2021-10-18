@@ -77,3 +77,26 @@ A semaphore is a variable with an integer value. The number means the number of 
 * `semWait()` operation : Decreases the semaphore value. If the value becomes negative, the process that called semWait is blocked (locked). That is, if it is not negative, the process can continue.
 * `semSignal()` operation : Increases the semaphore value. If the value is negative, the processes blocked by the semWait operation are released.
 
+The philosopher and the fork have the same number of forks, and the philosopher can eat only with two forks.
+
+A philosopher should sleep after eating.
+A philosopher begins to think after sleeping.
+A philosopher dies if he does not eat for a certain period of time.
+The program ends when one philosopher dies.
+You have to do it to avoid deadlock.
+
+## Deadlock
+
+If the cars go straight at almost the same time, as shown at the right, each car has a resource and needs another resource (a, b, c, d), and thus a deadlock occurs.
+
+1. Mutual exclusion condition.
+Only one process can use the resource at a time. That is, resources occupied by one process cannot be accessed by other processes.
+
+2. Hold and wait condition A
+process that already has a resource is waiting for another resource requesting it.
+
+3. No preemption condition
+Another process cannot forcibly seize the resources occupied by the process.
+
+4. Circular wait condition A
+closed chain exists between processes. That is, an annulus is created in the resource allocation graph. In a closed connection, a blocked process occupies a resource, and another process in the chain wants this resource and is waiting.
