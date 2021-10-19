@@ -90,6 +90,7 @@ A semaphore is a variable with an integer value. The number means the number of 
 * `semPost()` operation : Increases the semaphore value. If the value is negative, the processes blocked by the semWait operation are released.
 ![What is a semaphore_ How do they work_ (Example in C) (online-video-cutter com) (1)](https://user-images.githubusercontent.com/84707645/137935299-3c79e0b1-82f3-48a7-b7bd-9be351ced502.gif)
 
+Semaphores are divided into strong semaphores and weak semaphores depending on which process wakes up first when there are multiple processes in the queue. A semaphore that is pulled from a queue on a first-in-first-out basis is a rigid semaphore, and a semaphore that does not specify the order in which processes are removed from the queue is called a weak semaphore.
 
 The philosopher and the fork have the same number of forks, and the philosopher can eat only with two forks.
 
