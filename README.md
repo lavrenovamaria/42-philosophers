@@ -52,7 +52,6 @@ To go to the bathroom, you need to get a key at the counter. If there is a key a
 Other customers cannot enter the bathroom and have to wait until the customer who is using the bathroom has finished and returned the key to the counter.
 
 ![Untitled-111](https://user-images.githubusercontent.com/84707645/137924693-f92898f0-5d13-4377-93c5-481a9f731eed.jpg)
-
 ![Untitled-122](https://user-images.githubusercontent.com/84707645/137924710-f11fbc8f-c92a-410e-bc53-db926ddeec7a.jpg)
 
 
