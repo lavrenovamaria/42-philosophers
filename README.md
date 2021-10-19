@@ -105,17 +105,13 @@ If the cars go straight at almost the same time, as shown at the right, each car
 
 <img width="698" alt="Screen Shot 2021-10-18 at 7 26 37 PM" src="https://user-images.githubusercontent.com/84707645/137771454-c59651a3-a0c4-4616-80f2-71a2021d0c39.png">
 
-1. Mutual exclusion condition.
-Only one process can use the resource at a time. That is, resources occupied by one process cannot be accessed by other processes.
+1. Mutual exclusion condition. Only one process can use the resource at a time. That is, resources occupied by one process cannot be accessed by other processes.
 
-2. Hold and wait condition A
-process that already has a resource is waiting for another resource requesting it.
+2. Hold and wait condition. A process that already has a resource is waiting for another resource requesting it.
 
-3. No preemption condition
-Another process cannot forcibly seize the resources occupied by the process.
+3. No preemption condition. Another process cannot forcibly seize the resources occupied by the process.
 
-4. Circular wait condition A
-closed chain exists between processes. That is, an annulus is created in the resource allocation graph. In a closed connection, a blocked process occupies a resource, and another process in the chain wants this resource and is waiting.
+4. Circular wait condition. A closed chain exists between processes. That is, an annulus is created in the resource allocation graph. In a closed connection, a blocked process occupies a resource, and another process in the chain wants this resource and is waiting.
 
 Car 1: Needs zones a and b \
 Car 2: Needs zones b and c \
