@@ -86,7 +86,10 @@ In other words, semaphores achieve mutual exclusion using a single value that th
 A semaphore is a variable with an integer value. The number means the number of processes that can access the shared resource. Create the following structure to use the semaphore.
 
 * `semWait()` operation : Decreases the semaphore value. If the value becomes negative, the process that called semWait is blocked (locked). That is, if it is not negative, the process can continue.
+![What is a semaphore_ How do they work_ (Example in C) (online-video-cutter com)](https://user-images.githubusercontent.com/84707645/137935189-f6f0ad9c-1cd9-4a2a-816b-a8a9e42336e3.gif)
 * `semPost()` operation : Increases the semaphore value. If the value is negative, the processes blocked by the semWait operation are released.
+![What is a semaphore_ How do they work_ (Example in C) (online-video-cutter com) (1)](https://user-images.githubusercontent.com/84707645/137935299-3c79e0b1-82f3-48a7-b7bd-9be351ced502.gif)
+
 
 The philosopher and the fork have the same number of forks, and the philosopher can eat only with two forks.
 
