@@ -105,6 +105,8 @@ If the cars go straight at almost the same time, as shown at the right, each car
 
 <img width="698" alt="Screen Shot 2021-10-18 at 7 26 37 PM" src="https://user-images.githubusercontent.com/84707645/137771454-c59651a3-a0c4-4616-80f2-71a2021d0c39.png">
 
+Deadlock can exist if and only if 4 conditions hold simultaneously:
+
 1. Mutual exclusion condition. Only one process can use the resource at a time. That is, resources occupied by one process cannot be accessed by other processes.
 
 2. Hold and wait condition. A process that already has a resource is waiting for another resource requesting it.
