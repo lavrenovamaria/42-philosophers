@@ -126,6 +126,6 @@ Soo...mutual exclusion is absolutely necessary to ensure the consistency of exec
 Condition 4 occurs as a result of conditions 1-3. That is, as a result of the complex interaction of conditions 1 to 3, an unsolvable environmental atmospheric condition occurs. The definition of a deadlock is an annular waiting state that cannot be resolved immediately. The reason why the annular wait state cannot be resolved is that conditions 1 to 3 are observed. After all, the above four conditions are necessary and sufficient conditions for a deadlock to occur.
 
 Among the various approaches to solving the deadlock, there are three representative ones.
-The first approach is to **prevent** the system from allowing one of the conditions 1 to 4 for deadlock to occur.
-The second approach is to safely determine resource allocation according to the current resource allocation status as deadlock **avoidance**.
-A third approach is deadlock **detection**, which detects and recovers from deadlocks when they occur. Now let's look at each method.
+The first approach is to `prevent` the system from allowing one of the conditions 1 to 4 for deadlock to occur.
+The second approach is to safely determine resource allocation according to the current resource allocation status as deadlock `avoidance`.
+A third approach is deadlock `detection`, which detects and recovers from deadlocks when they occur. Now let's look at each method.
