@@ -123,9 +123,18 @@ Car 3: Needs zones c and d \
 Car 4: Needs zones a, d
 
 Soo...mutual exclusion is absolutely necessary to ensure the consistency of execution results and the integrity of the database.
-Condition 4 occurs as a result of conditions 1-3. That is, as a result of the complex interaction of conditions 1 to 3, an unsolvable environmental atmospheric condition occurs. The definition of a deadlock is an annular waiting state that cannot be resolved immediately. The reason why the annular wait state cannot be resolved is that conditions 1 to 3 are observed. After all, the above four conditions are necessary and sufficient conditions for a deadlock to occur.
+Condition 4 occurs as a result of conditions 1-3. That is, as a result of the complex interaction of conditions 1 to 3, an unsolvable condition occurs. The definition of a deadlock is an annular waiting state that cannot be resolved immediately. The reason why the annular wait state cannot be resolved is that conditions 1 to 3 are observed. After all, the above four conditions are necessary and sufficient conditions for a deadlock to occur.
 
-Among the various approaches to solving the deadlock, there are three representative ones.
-The first approach is to `prevent` the system from allowing one of the conditions 1 to 4 for deadlock to occur.
-The second approach is to safely determine resource allocation according to the current resource allocation status as deadlock `avoidance`.
+Among the various approaches to solving the deadlock, there are three representative ones.\
+The first approach is to `prevent` the system from allowing one of the conditions 1 to 4 for deadlock to occur.\
+The second approach is to safely determine resource allocation according to the current resource allocation status as deadlock `avoidance`.\
 A third approach is deadlock `detection`, which detects and recovers from deadlocks when they occur. Now let's look at each method.
+
+### Deadlock Prevention
+A deadlock prevention strategy is to eliminate the possibility of deadlocks when designing an operating system, but mutual exclusion conditions cannot be eliminated when designing a system. Since the mutual exclusion condition is absolutely necessary to maintain the consistency of shared resources, if mutual exclusion is required in resource access, the operating system must support it. For example, for a resource such as a file, multiple read accesses are allowed, but only one write access should be allowed exclusively at a time. A deadlock can also occur when multiple processes are trying to gain write access.
+
+### Deadlock Avoidance
+Another way to solve deadlocks is avoidance. Avoidance takes a slightly different approach than prevention. Deadlock prevention is a method of preventing one of the four conditions necessary for deadlock to occur. Prevention can lead to inefficiencies in resource usage and process performance. On the other hand, deadlock avoidance allows 1-3 of the deadlock occurrence conditions. Nor does it predetermine the order of resource allocation like prevention. Instead, when allocating resources, consider not going into a situation where a deadlock is possible. Therefore, the avoidance method provides more parallelism than the prevention method (higher efficiency of resource use).
+
+### Deadlock Detection
+The deadlock prevention strategy places restrictions on resource access and process execution to prevent deadlocks from occurring. On the other hand, the deadlock detection strategy does not impose restrictions on resource access or process behavior. That is, if resource allocation is possible, it always allocates it. However, the deadlock detection method periodically checks whether an annular waiting condition has occurred in the system and, if it does, resolves it.
