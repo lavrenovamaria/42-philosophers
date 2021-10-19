@@ -120,4 +120,4 @@ closed chain exists between processes. That is, an annulus is created in the res
 Car 1: Needs zones a and b \
 Car 2: Needs zones b and c \
 Car 3: Needs zones c and d \
-Car 4: Needs zones a, d \
+Car 4: Needs zones a, d
