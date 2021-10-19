@@ -101,7 +101,7 @@ You have to do it to avoid deadlock.
 
 ## Deadlock
 
-If the cars go straight at almost the same time, as shown at the right, each car has a resource and needs another resource (a, b, c, d), and thus a deadlock occurs.
+If the cars go straight at almost the same time, as shown at the right, each car has a resource and needs another resource (a, b, c, d), and thus a [deadlock](https://en.wikipedia.org/wiki/Deadlock) occurs.
 
 <img width="698" alt="Screen Shot 2021-10-18 at 7 26 37 PM" src="https://user-images.githubusercontent.com/84707645/137771454-c59651a3-a0c4-4616-80f2-71a2021d0c39.png">
 
