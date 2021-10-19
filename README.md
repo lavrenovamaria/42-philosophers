@@ -72,6 +72,13 @@ Customers who have finished their duties give +1 to the number on the electronic
 
 In other words, semaphores achieve mutual exclusion using a single value that they manage in common.
 
+![3333](https://user-images.githubusercontent.com/84707645/137931999-9dcc483d-85f5-4de9-a2c9-327b13719521.jpg)
+![Untitled-1444](https://user-images.githubusercontent.com/84707645/137932019-a937f327-9e33-40b2-a0dc-6c2cc8256574.jpg)
+![55](https://user-images.githubusercontent.com/84707645/137932035-70f16c7f-9bc7-4343-aafd-102347435080.jpg)
+![66](https://user-images.githubusercontent.com/84707645/137932058-66cfd74e-e21d-4fc5-b74c-ceae3cc95b62.jpg)
+![777](https://user-images.githubusercontent.com/84707645/137932082-ddb7eed5-5671-407b-8ebb-2b8460502714.jpg)
+
+
 * toilet == shared resource
 * customers using the toilet == process (thread)
 * waiting line == queue
