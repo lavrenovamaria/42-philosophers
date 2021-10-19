@@ -51,8 +51,10 @@ Mutex and Semaphore are both techniques designed to achieve mutual exclusion of 
 To go to the bathroom, you need to get a key at the counter. If there is a key at the counter, it means that no one is in the bathroom and you can use that key to enter the bathroom.
 Other customers cannot enter the bathroom and have to wait until the customer who is using the bathroom has finished and returned the key to the counter.
 
-![Untitled-111](https://user-images.githubusercontent.com/84707645/137924156-295b8735-fa36-4de8-af59-e9e604aabc3f.jpg)
-![Untitled-122](https://user-images.githubusercontent.com/84707645/137924176-5e0b736f-19f1-4d63-b800-7a88813c475f.jpg)
+![Untitled-111](https://user-images.githubusercontent.com/84707645/137924693-f92898f0-5d13-4377-93c5-481a9f731eed.jpg)
+
+![Untitled-122](https://user-images.githubusercontent.com/84707645/137924710-f11fbc8f-c92a-410e-bc53-db926ddeec7a.jpg)
+
 
 * toilet == shared resource
 * customers using the toilet == process (thread)
