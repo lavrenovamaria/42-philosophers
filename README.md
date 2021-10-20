@@ -156,6 +156,8 @@ r an annular waiting condition has occurred in the system and, if it does, resol
 
 ## Useful pthread_join
 
+Function waits for the thread specified by thread to terminate.  If that thread has already terminated, then pthread_join() returns immediately.
+
 <p align="center">
 	<img  src="https://user-images.githubusercontent.com/84707645/138156548-29624bdc-f60f-4bd1-8bad-e6947df8b2a1.gif" width="572" height="930" /> 
 </p>
