@@ -103,6 +103,18 @@ A philosopher dies if he does not eat for a certain period of time.
 The program ends when one philosopher dies.
 You have to do it to avoid deadlock.
 
+Arguments when input are as follows:
+
+The first argument number_of_philosophers: the number of philosophers (same as the number of forks).
+
+2nd argument time_to_eat: time to eat [ms]
+
+3rd argument time_to_die: Time to die [ms] (Initialized when eaten)
+
+4th argument time_to_sleep: Sleep time [ms]
+
+Fifth argument number_of_times_each_philosopher_must_eat: the number of times philosophers ate to terminate the program (all philosophers)
+
 ## Deadlock
 
 If the cars go straight at almost the same time, as shown at the right, each car has a resource and needs another resource (a, b, c, d), and thus a [deadlock](https://en.wikipedia.org/wiki/Deadlock) occurs.
