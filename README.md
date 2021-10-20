@@ -155,4 +155,7 @@ The deadlock prevention strategy places restrictions on resource access and proc
 r an annular waiting condition has occurred in the system and, if it does, resolves it.
 
 ## Useful pthread_join
-[simplescreenrecorder-2021-10-20_21 53 54](https://user-images.githubusercontent.com/84707645/138156548-29624bdc-f60f-4bd1-8bad-e6947df8b2a1.gif)
+
+<p align="center">
+	<img  src="https://user-images.githubusercontent.com/84707645/138156548-29624bdc-f60f-4bd1-8bad-e6947df8b2a1.gif" width="400" height="400" /> 
+</p>
