@@ -156,6 +156,11 @@ r an annular waiting condition has occurred in the system and, if it does, resol
 
 ## Useful pthread_join
 
-<p align="center">
+<p align="left">
 	<img  src="https://user-images.githubusercontent.com/84707645/138156548-29624bdc-f60f-4bd1-8bad-e6947df8b2a1.gif" width="572" height="930" /> 
 </p>
+<p align="right">
+	<img  src="ttps://user-images.githubusercontent.com/84707645/138157129-24054268-6f6f-4e55-83e4-04f8fec2714e.gif" width="572" height="930" /> 
+</p>
+
+
