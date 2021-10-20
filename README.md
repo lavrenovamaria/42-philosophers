@@ -151,4 +151,8 @@ A deadlock prevention strategy is to eliminate the possibility of deadlocks when
 Another way to solve deadlocks is avoidance. Avoidance takes a slightly different approach than prevention. Deadlock prevention is a method of preventing one of the four conditions necessary for deadlock to occur. Prevention can lead to inefficiencies in resource usage and process performance. On the other hand, deadlock avoidance allows 1-3 of the deadlock occurrence conditions. Nor does it predetermine the order of resource allocation like prevention. Instead, when allocating resources, consider not going into a situation where a deadlock is possible. Therefore, the avoidance method provides more parallelism than the prevention method (higher efficiency of resource use).
 
 ### Deadlock Detection
-The deadlock prevention strategy places restrictions on resource access and process execution to prevent deadlocks from occurring. On the other hand, the deadlock detection strategy does not impose restrictions on resource access or process behavior. That is, if resource allocation is possible, it always allocates it. However, the deadlock detection method periodically checks whether an annular waiting condition has occurred in the system and, if it does, resolves it.
+The deadlock prevention strategy places restrictions on resource access and process execution to prevent deadlocks from occurring. On the other hand, the deadlock detection strategy does not impose restrictions on resource access or process behavior. That is, if resource allocation is possible, it always allocates it. However, the deadlock detection method periodically checks whethe!
+r an annular waiting condition has occurred in the system and, if it does, resolves it.
+
+## Useful pthread_join
+[simplescreenrecorder-2021-10-20_21 53 54](https://user-images.githubusercontent.com/84707645/138156548-29624bdc-f60f-4bd1-8bad-e6947df8b2a1.gif)
