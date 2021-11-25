@@ -110,17 +110,29 @@ void	taking_forks(t_philo *philo)
 {
 	if((philo->philo_id + 1) % 2 == 0)
 	{
-		pthread_mutex_lock(philo->l_f);
-		printf("%ld %d has taken a left fork\n", ft_time()- philo->start_time, philo->philo_id);
 		pthread_mutex_lock(philo->r_f);
+		// pthread_mutex_lock(&philo->lock_print);
+		// printf("%ld %d has taken a right fork\n", ft_time()- philo->start_time, philo->philo_id);
+		// pthread_mutex_unlock(&philo->lock_print);
+		// pthread_mutex_lock(&philo->lock_print);
+		pthread_mutex_lock(philo->l_f);
+		pthread_mutex_lock(&philo->lock_print);
 		printf("%ld %d has taken a right fork\n", ft_time()- philo->start_time, philo->philo_id);
+		printf("%ld %d has taken a left fork\n", ft_time()- philo->start_time, philo->philo_id);
+		pthread_mutex_unlock(&philo->lock_print);
 	}
 	else
 	{
-		pthread_mutex_lock(philo->r_f);
-		printf("%ld %d has taken a right fork\n", ft_time()- philo->start_time, philo->philo_id);
 		pthread_mutex_lock(philo->l_f);
+		// pthread_mutex_lock(&philo->lock_print);
+		// printf("%ld %d has taken a right fork\n", ft_time()- philo->start_time, philo->philo_id);
+		// pthread_mutex_unlock(&philo->lock_print);
+		// pthread_mutex_lock(&philo->lock_print);
+		pthread_mutex_lock(philo->r_f);
+		pthread_mutex_lock(&philo->lock_print);
 		printf("%ld %d has taken a left fork\n", ft_time()- philo->start_time, philo->philo_id);
+		printf("%ld %d has taken a right fork\n", ft_time()- philo->start_time, philo->philo_id);
+		pthread_mutex_unlock(&philo->lock_print);
 	}
 	//pthread_mutex_lock(&args->lock_print);
 	//printf("%ld %d has taken a fork\n", ft_time()- philo->start_time, philo->philo_id);
@@ -130,10 +142,10 @@ void	taking_forks(t_philo *philo)
 
 void	eating(t_philo *philo)
 {
-	//pthread_mutex_lock(&args->lock_print);
+	pthread_mutex_lock(&philo->lock_print);
 	printf("%ld %d is eating\n", ft_time() - philo->start_time, philo->philo_id);
 	//display_message();//is eating
-	//pthread_mutex_unlock(&args->lock_print);
+	pthread_mutex_unlock(&philo->lock_print);
 	philo->nbr_of_meals +=1;
 	ft_usleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->l_f);
@@ -142,19 +154,19 @@ void	eating(t_philo *philo)
 
 void	sleeping(t_philo *philo)
 {
-	//pthread_mutex_lock(&args->lock_print);
+	pthread_mutex_lock(&philo->lock_print);
 	printf("%ld %d is sleeping\n", ft_time()- philo->start_time, philo->philo_id);
 	//display_message();//sleeping
-	//pthread_mutex_unlock(&args->lock_print);
+	pthread_mutex_unlock(&philo->lock_print);
 	ft_usleep(philo->time_to_sleep);
 }
 
 void	thinking(t_philo *philo)
 {
-	//pthread_mutex_lock(&args->lock_print);
+	pthread_mutex_lock(&philo->lock_print);
 	printf("%ld %d is thinking\n", ft_time()- philo->start_time, philo->philo_id);
 	//display_message();//thinking
-	//pthread_mutex_unlock(&args->lock_print);
+	pthread_mutex_unlock(&philo->lock_print);
 }
 
 void *ft_process(t_philo *raw_philo)
@@ -165,7 +177,7 @@ void *ft_process(t_philo *raw_philo)
 	{
 		if(ft_time() - philo.time_of_last_meal > philo.limit_of_life)
 		{
-			philo.time_of_last_meal = ft_time();
+			//philo.time_of_last_meal = ft_time();
 			taking_forks(&philo);
 			eating(&philo);
 			sleeping(&philo);
@@ -189,7 +201,7 @@ void ft_init_mutex(t_arg *args)
 	while(nbr_ph--)
 		pthread_mutex_init(&mutex[nbr_ph], NULL);
 	//pthread_mutex_init(&args->set_id, NULL);
-	pthread_mutex_init(&args->lock_print, NULL);
+	//pthread_mutex_init(&args->lock_print, NULL);
 	args->forks = mutex;
 }
 

@@ -31,6 +31,7 @@ typedef struct		s_philo
 	t_bool			stop;//true if philosopher ate time_of_last_meal arg5
 	t_bool			dead;//
 	time_t			start_time;
+	pthread_mutex_t	lock_print; //for printf
 	pthread_mutex_t	*l_f;//left fork = id of philo
 	pthread_mutex_t	*r_f;//pointer ti right fork
 }					t_philo;
