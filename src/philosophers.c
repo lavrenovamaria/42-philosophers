@@ -7,6 +7,7 @@ int	ft_time(void)
 
 	gettimeofday(&tv, NULL);
 	res = 1000 * (size_t)tv.tv_sec + (size_t)tv.tv_usec / 1000;
+	// printf("%ld", res);
 	return (res);
 }
 
@@ -56,31 +57,6 @@ int	ft_atoi(const char *str)
 
 // }
 
-void ft_init_philosophers(t_arg *args)
-{
-	int i;
-	i = 0;
-	//t_philo philos[args->nbr_philo];//куча структур, philos указатель на первого фило(по кол-ву философов)
-	t_philo *philos = malloc(sizeof(t_philo) * args->nbr_philo);
-	//philo->stop = 0;
-	while(i < args->nbr_philo)
-	{
-		philos[i].philo_id = i + 1;
-		philos[i].nbr_of_meals = 0;
-		philos[i].time_to_eat = args->time_to_eat;
-		philos[i].time_to_sleep = args->time_to_sleep;
-		philos[i].time_to_die = args->time_to_die;
-		philos[i].time_of_last_meal = 0;
-		philos[i].limit_of_life = args->time_to_die;
-		philos[i].dead = 0;
-		philos[i].stop = 0;
-		philos[i].l_f = &args->forks[philos[i].philo_id];
-		philos[i].r_f = &args->forks[(philos[i].philo_id + 1) % args->nbr_philo];
-		i++;
-	}
-	args->all_philos = philos;
-}
-
 void debug(t_arg *args)
 {
 	int i;
@@ -106,9 +82,36 @@ void debug(t_arg *args)
 	}
 }
 
+void ft_init_philosophers(t_arg *args)
+{
+	int i;
+	i = 0;
+	//t_philo philos[args->nbr_philo];//куча структур, philos указатель на первого фило(по кол-ву философов)
+	t_philo *philos = malloc(sizeof(t_philo) * args->nbr_philo);
+	//philo->stop = 0;
+	while(i < args->nbr_philo)
+	{
+		philos[i].philo_id = i;
+		philos[i].nbr_of_meals = 0;
+		philos[i].time_to_eat = args->time_to_eat;
+		philos[i].time_to_sleep = args->time_to_sleep;
+		philos[i].time_to_die = args->time_to_die;
+		philos[i].time_of_last_meal = ft_time();
+		philos[i].limit_of_life = args->time_to_die;
+		philos[i].dead = 0;
+		philos[i].stop = 0;
+		philos[i].l_f = &args->forks[philos[i].philo_id];
+		philos[i].r_f = &args->forks[(philos[i].philo_id + 1) % args->nbr_philo];
+		i++;
+	}
+	args->all_philos = philos;
+}
+
 void	taking_forks(t_philo *philo)
 {
-	if((philo->philo_id + 1) % 2 == 0)
+	//if((philo->philo_id) % 2 == 0 && philo->philo_id == philo->nbr_philo)
+	//printf("\n%d\n", philo->philo_id);
+	if((philo->philo_id) % 2 == 0 && philo->philo_id + 1 != philo->nbr_philo)
 	{
 		pthread_mutex_lock(philo->r_f);
 		// pthread_mutex_lock(&philo->lock_print);
@@ -116,10 +119,10 @@ void	taking_forks(t_philo *philo)
 		// pthread_mutex_unlock(&philo->lock_print);
 		// pthread_mutex_lock(&philo->lock_print);
 		pthread_mutex_lock(philo->l_f);
-		pthread_mutex_lock(&philo->lock_print);
-		printf("%ld %d has taken a right fork\n", ft_time()- philo->start_time, philo->philo_id);
-		printf("%ld %d has taken a left fork\n", ft_time()- philo->start_time, philo->philo_id);
-		pthread_mutex_unlock(&philo->lock_print);
+		//pthread_mutex_lock(&philo->lock_print);
+		printf("%ld %d has taken a right fork\n", ft_time()- philo->start_time, philo->philo_id + 1);
+		printf("%ld %d has taken a left fork\n", ft_time()- philo->start_time, philo->philo_id + 1);
+		//pthread_mutex_unlock(&philo->lock_print);
 	}
 	else
 	{
@@ -129,10 +132,10 @@ void	taking_forks(t_philo *philo)
 		// pthread_mutex_unlock(&philo->lock_print);
 		// pthread_mutex_lock(&philo->lock_print);
 		pthread_mutex_lock(philo->r_f);
-		pthread_mutex_lock(&philo->lock_print);
-		printf("%ld %d has taken a left fork\n", ft_time()- philo->start_time, philo->philo_id);
-		printf("%ld %d has taken a right fork\n", ft_time()- philo->start_time, philo->philo_id);
-		pthread_mutex_unlock(&philo->lock_print);
+		//pthread_mutex_lock(&philo->lock_print);
+		printf("%ld %d has taken a left fork\n", ft_time()- philo->start_time, philo->philo_id + 1);
+		printf("%ld %d has taken a right fork\n", ft_time()- philo->start_time, philo->philo_id + 1);
+		//pthread_mutex_unlock(&philo->lock_print);
 	}
 	//pthread_mutex_lock(&args->lock_print);
 	//printf("%ld %d has taken a fork\n", ft_time()- philo->start_time, philo->philo_id);
@@ -142,42 +145,47 @@ void	taking_forks(t_philo *philo)
 
 void	eating(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->lock_print);
-	printf("%ld %d is eating\n", ft_time() - philo->start_time, philo->philo_id);
+	//pthread_mutex_lock(&philo->lock_print);
+	printf("%ld %d is eating\n", ft_time() - philo->start_time, philo->philo_id + 1);
 	//display_message();//is eating
-	pthread_mutex_unlock(&philo->lock_print);
-	philo->nbr_of_meals +=1;
-	ft_usleep(philo->time_to_eat);
+	//pthread_mutex_unlock(&philo->lock_print);
+	//philo->nbr_of_meals +=1;
+	usleep(philo->time_to_eat * 1000);
+	//philo->time_of_last_meal = ft_time();
 	pthread_mutex_unlock(philo->l_f);
 	pthread_mutex_unlock(philo->r_f);
 }
 
 void	sleeping(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->lock_print);
-	printf("%ld %d is sleeping\n", ft_time()- philo->start_time, philo->philo_id);
+	//pthread_mutex_lock(&philo->lock_print);
+	printf("%ld %d is sleeping\n", ft_time()- philo->start_time, philo->philo_id + 1);
 	//display_message();//sleeping
-	pthread_mutex_unlock(&philo->lock_print);
-	ft_usleep(philo->time_to_sleep);
+	//pthread_mutex_unlock(&philo->lock_print);
+	usleep(philo->time_to_sleep * 1000);
 }
 
 void	thinking(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->lock_print);
-	printf("%ld %d is thinking\n", ft_time()- philo->start_time, philo->philo_id);
+	//pthread_mutex_lock(&philo->lock_print);
+	printf("%ld %d is thinking\n", ft_time()- philo->start_time, philo->philo_id + 1);
 	//display_message();//thinking
-	pthread_mutex_unlock(&philo->lock_print);
+	//pthread_mutex_unlock(&philo->lock_print);
 }
 
 void *ft_process(t_philo *raw_philo)
 {
 	t_philo		philo = *raw_philo;
 	philo.start_time = ft_time();
+	//usleep((philo.philo_id % 2) * 1000);
+	//printf("%ld", philo.start_time);
+	//printf("\n%d\n", philo.philo_id);
 	while (1)
 	{
-		if(ft_time() - philo.time_of_last_meal > philo.limit_of_life)
+		//printf("%ld", philo.start_time);
+		if(ft_time() - philo.time_of_last_meal < philo.limit_of_life)
 		{
-			//philo.time_of_last_meal = ft_time();
+			philo.time_of_last_meal = ft_time();
 			taking_forks(&philo);
 			eating(&philo);
 			sleeping(&philo);
@@ -185,7 +193,10 @@ void *ft_process(t_philo *raw_philo)
 		}
 		else
 		{
-			printf("%ld %d is dead\n", ft_time()- philo.start_time, philo.philo_id);
+			// printf("%d\n", ft_time());
+			// printf("%ld\n", philo.time_of_last_meal);
+			// printf("%ld\n", philo.limit_of_life);
+			printf("%ld %d is dead\n", ft_time()- philo.start_time, philo.philo_id + 1);
 			return(NULL);
 		}
 	}

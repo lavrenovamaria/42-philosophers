@@ -24,6 +24,7 @@ typedef struct		s_philo
 	int				philo_id;//id of philosopher
 	int				nbr_of_meals;//each time the philosopher eats -> nbr++
 	time_t			time_of_last_meal;//time when philo last eat im ms
+	int				nbr_philo; //arg1
 	int				time_to_eat; //arg3
 	int				time_to_die; //arg2
 	int				time_to_sleep; //arg4
