@@ -98,7 +98,7 @@ void ft_init_philosophers(t_arg *args)
 		philos[i].time_to_die = args->time_to_die;
 		philos[i].time_of_last_meal = ft_time();
 		philos[i].limit_of_life = args->time_to_die;
-		philos[i].dead = 0;
+		//philos[i].dead = 0;
 		philos[i].stop = 0;
 		philos[i].l_f = &args->forks[philos[i].philo_id];
 		philos[i].r_f = &args->forks[(philos[i].philo_id + 1) % args->nbr_philo];
@@ -149,9 +149,9 @@ void	eating(t_philo *philo)
 	printf("%ld %d is eating\n", ft_time() - philo->start_time, philo->philo_id + 1);
 	//display_message();//is eating
 	//pthread_mutex_unlock(&philo->lock_print);
-	//philo->nbr_of_meals +=1;
-	usleep(philo->time_to_eat * 1000);
-	//philo->time_of_last_meal = ft_time();
+	philo->nbr_of_meals +=1;
+	ft_usleep(philo->time_to_eat);
+	philo->time_of_last_meal = ft_time() - philo->start_time;
 	pthread_mutex_unlock(philo->l_f);
 	pthread_mutex_unlock(philo->r_f);
 }
@@ -162,7 +162,7 @@ void	sleeping(t_philo *philo)
 	printf("%ld %d is sleeping\n", ft_time()- philo->start_time, philo->philo_id + 1);
 	//display_message();//sleeping
 	//pthread_mutex_unlock(&philo->lock_print);
-	usleep(philo->time_to_sleep * 1000);
+	ft_usleep(philo->time_to_sleep);
 }
 
 void	thinking(t_philo *philo)
@@ -173,6 +173,29 @@ void	thinking(t_philo *philo)
 	//pthread_mutex_unlock(&philo->lock_print);
 }
 
+void *ft_galina_monitor(void *args)
+{
+	t_philo *philo;
+	time_t time;
+	int i;
+	philo = (t_philo *)args;
+	philo->start_time = ft_time();
+	while(1)
+	{
+		i = -1;
+		while(++i < philo[0].nbr_philo)
+		{
+			//time = ft_time() - philo[i].start_time;
+			if (time -  philo[i].time_of_last_meal > philo[i].limit_of_life)
+			{
+				printf("%ld %d DIED\n", ft_time()- philo->start_time, philo->philo_id + 1);
+				return(NULL);
+			}
+		}
+	}
+	return(NULL);
+}
+
 void *ft_process(t_philo *raw_philo)
 {
 	t_philo		philo = *raw_philo;
@@ -180,25 +203,14 @@ void *ft_process(t_philo *raw_philo)
 	//usleep((philo.philo_id % 2) * 1000);
 	//printf("%ld", philo.start_time);
 	//printf("\n%d\n", philo.philo_id);
+	//int diff = ft_time();
 	while (1)
 	{
-		//printf("%ld", philo.start_time);
-		if(ft_time() - philo.time_of_last_meal < philo.limit_of_life)
-		{
-			philo.time_of_last_meal = ft_time();
-			taking_forks(&philo);
-			eating(&philo);
-			sleeping(&philo);
-			thinking(&philo);
-		}
-		else
-		{
-			// printf("%d\n", ft_time());
-			// printf("%ld\n", philo.time_of_last_meal);
-			// printf("%ld\n", philo.limit_of_life);
-			printf("%ld %d is dead\n", ft_time()- philo.start_time, philo.philo_id + 1);
-			return(NULL);
-		}
+		//philo.time_of_last_meal = ft_time();
+		taking_forks(&philo);
+		eating(&philo);
+		sleeping(&philo);
+		thinking(&philo);
 	}
 	return (NULL);
 }
@@ -211,8 +223,8 @@ void ft_init_mutex(t_arg *args)
 	mutex = malloc(sizeof(pthread_mutex_t) * nbr_ph);
 	while(nbr_ph--)
 		pthread_mutex_init(&mutex[nbr_ph], NULL);
-	//pthread_mutex_init(&args->set_id, NULL);
-	//pthread_mutex_init(&args->lock_print, NULL);
+	//pthread_mutex_init(&args->set_id, NULL); //я хз зачем на id делать лок, если у меня они не пересекаются никак
+	pthread_mutex_init(&args->lock_print, NULL); //на принт тоже хз, но кто-то сказал так надо
 	args->forks = mutex;
 }
 
@@ -220,10 +232,12 @@ void ft_init_threads(t_arg *args)
 {
 	int nbr_ph = args->nbr_philo;
 	pthread_t		*threads;
+	pthread_t		s_tid;
 
 	threads = malloc(sizeof(pthread_mutex_t) * nbr_ph);
 	while(nbr_ph--)
 		pthread_create(&threads[nbr_ph], NULL, (void *)ft_process, &args->all_philos[nbr_ph]);
+	pthread_create(&s_tid, NULL, ft_galina_monitor, (void *)args->all_philos); //съешь еще один хрустящий тред да выпей чаю
 	args->tids = threads;
 }
 

@@ -30,7 +30,7 @@ typedef struct		s_philo
 	int				time_to_sleep; //arg4
 	time_t			limit_of_life;//when time_of_last_meal > limit_of_life --> dead
 	t_bool			stop;//true if philosopher ate time_of_last_meal arg5
-	t_bool			dead;//
+	//t_bool			dead;//
 	time_t			start_time;
 	pthread_mutex_t	lock_print; //for printf
 	pthread_mutex_t	*l_f;//left fork = id of philo
@@ -47,8 +47,7 @@ typedef struct		s_arg
 	int				nbr_of_meals; //arg5
 	int				cnt_of_meals; //when a philosopher ate nbr_of_meals times -> counter++
 	pthread_mutex_t	*forks;
-	pthread_t		*tids;//id of the threads
- //start time in milliseconds
+	pthread_t		*tids;//id of the threads //start time in milliseconds
 	pthread_mutex_t	lock_print; //for printf
 	t_philo			*all_philos;
 }					t_arg;
