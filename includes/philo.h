@@ -41,6 +41,7 @@ typedef struct		s_arg
 {
 	int				nbr_philo; //arg1
 	int				philo_id;
+	time_t			start_time;
 	int				time_to_die; //arg2
 	int				time_to_eat; //arg3
 	int				time_to_sleep; //arg4
