@@ -7,34 +7,27 @@
 # include <stdlib.h>
 # include <pthread.h>
 # include <sys/time.h>
+# include "philo.h"
 
-# define THINKING "%6lu %3d   is thinking\n"
-# define TAKEN_FORK "%6lu %3d   has taken a fork\n"
-# define SLEEPING "%6lu %3d   is sleeping\n"
-# define EATING "%6lu %3d   is eating\n"
-# define DIED "%6lu %3d   died\n"
-
-typedef enum e_bool {
-	false,
-	true
-}				t_bool;
+struct s_arg;
 
 typedef struct		s_philo
 {
 	int				philo_id;//id of philosopher
-	int				nbr_of_meals;//each time the philosopher eats -> nbr++
+	int				total_nbr_of_meals;//!!!!!!!!!!!!!!!!!
+	int				total_nbr_of_meals_1;
 	time_t			time_of_last_meal;//time when philo last eat im ms
 	int				nbr_philo; //arg1
 	int				time_to_eat; //arg3
 	int				time_to_die; //arg2
 	int				time_to_sleep; //arg4
 	time_t			limit_of_life;//when time_of_last_meal > limit_of_life --> dead
-	t_bool			stop;//true if philosopher ate time_of_last_meal arg5
-	//t_bool			dead;//
+	int				stop;//true if philosopher ate time_of_last_meal arg5
 	time_t			start_time;
 	pthread_mutex_t	lock_print; //for printf
 	pthread_mutex_t	*l_f;//left fork = id of philo
-	pthread_mutex_t	*r_f;//pointer ti right fork
+	pthread_mutex_t	*r_f;
+	struct s_arg			*arg;
 }					t_philo;
 
 typedef struct		s_arg
@@ -45,13 +38,11 @@ typedef struct		s_arg
 	int				time_to_die; //arg2
 	int				time_to_eat; //arg3
 	int				time_to_sleep; //arg4
-	int				nbr_of_meals; //arg5
-	int				cnt_of_meals; //when a philosopher ate nbr_of_meals times -> counter++
+	int				nbr_of_meals; //!!!!!!!!
 	pthread_mutex_t	*forks;
 	pthread_t		*tids;//id of the threads //start time in milliseconds
 	pthread_mutex_t	lock_print; //for printf
 	t_philo			*all_philos;
 }					t_arg;
-
 
 #endif

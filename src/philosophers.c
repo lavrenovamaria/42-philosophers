@@ -18,6 +18,41 @@ static int	ft_isspace(int c)
 	return (0);
 }
 
+void	ft_check_args(void)
+{
+	printf(" ____________________________________________________ \n");
+	printf("|            Please enter 4 or 5 arguments           |\n");
+	printf("|____________________________________________________|\n");
+	printf("|             [1][Number of philosophers]            |\n");
+	printf("|             [2][Time to die]                       |\n");
+	printf("|             [3][Time to eat]                       |\n");
+	printf("|             [4][Time to sleep]                     |\n");
+	printf("|             [5][Number of meals]                   |\n");
+	printf("|____________________________________________________|\n");
+}
+
+void	ft_clear(t_arg *args)
+{
+	int	i;
+
+	i = -1;
+	while (++i < args->nbr_philo)
+	{
+		pthread_mutex_destroy(args->all_philos[i].l_f);
+		i++;
+	}
+	pthread_mutex_destroy(&args->lock_print);
+	free(args->all_philos);
+}
+
+int	ft_exit(t_arg *args, int exit_code)
+{
+	if (exit_code == 1)
+		return(1);
+	ft_check_args();
+	return(0);
+}
+
 void	ft_usleep(int ms)
 {
 	long	time;
@@ -51,6 +86,26 @@ int	ft_atoi(const char *str)
 	return (res * i);
 }
 
+int	ft_is_digit(char **argv)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	while (argv[i])
+	{
+		j = 0;
+		while (argv[i][j])
+		{
+			if (argv[i][j] < 48 || argv[i][j] > 57)
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 void ft_init_philosophers(t_arg *args)
 {
 	int i;
@@ -61,7 +116,10 @@ void ft_init_philosophers(t_arg *args)
 	{
 		philos[i].philo_id = i;
 		philos[i].nbr_philo = args->nbr_philo;
-		philos[i].nbr_of_meals = 0;
+		philos[i].total_nbr_of_meals = 0;
+		philos[i].total_nbr_of_meals_1 = args->nbr_of_meals;
+		//printf("CNT_MEALS IS %d\n", args->cnt_of_meals);
+		//printf("NBR_MEALS IS %d\n", philos[i].nbr_of_meals);
 		philos[i].time_to_eat = args->time_to_eat;
 		philos[i].time_to_sleep = args->time_to_sleep;
 		philos[i].time_to_die = args->time_to_die;
@@ -100,7 +158,8 @@ void	eating(t_philo *philo)
 	pthread_mutex_lock(&philo->lock_print);
 	printf("%ld %d is eating\n", ft_time() - philo->start_time, philo->philo_id + 1);
 	pthread_mutex_unlock(&philo->lock_print);
-	philo->nbr_of_meals +=1;
+	philo->total_nbr_of_meals += 1;
+	//printf("NBR_MEALS IS %d\n", philo->total_nbr_of_meals);
 	philo->time_of_last_meal = ft_time();
 	ft_usleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->l_f);
@@ -122,11 +181,42 @@ void	thinking(t_philo *philo)
 	pthread_mutex_unlock(&philo->lock_print);
 }
 
+int ft_cnt_of_meals(t_arg *philo)
+{
+	int flag_enough;
+	int i;
+	printf("HEllo\n");
+	if (philo->all_philos[i].total_nbr_of_meals != -1)
+	{
+		printf("HEllo_1!!\n");
+		flag_enough = 1;
+		i = -1;
+		while(++i < philo->nbr_philo)
+		{
+			if(philo[i].all_philos->total_nbr_of_meals  < philo->all_philos->total_nbr_of_meals_1)
+				flag_enough = 0;
+		}
+			
+		if (flag_enough = 1)
+		{
+			i = -1;
+			while(++i < philo->nbr_philo)
+			{
+				printf ("philosopher %d", philo[i].philo_id + 1);
+				printf (" total eat = %d\n", philo[i].all_philos->total_nbr_of_meals);
+			}
+			return(1);
+		}
+	}
+	return(0);
+}
+
 void *ft_galina_monitor(void *args)
 {
 	t_philo *philo;
 	int i;
 	philo = (t_philo *)args;
+	philo->time_of_last_meal = philo->start_time = ft_time();
 	while(1)
 	{
 		i = -1;
@@ -134,10 +224,16 @@ void *ft_galina_monitor(void *args)
 		{
 			if (ft_time() -  philo[i].time_of_last_meal > philo[i].limit_of_life)
 			{
+				pthread_mutex_lock(&philo->lock_print);
 				printf("%ld %d DIED\n", ft_time() - philo->start_time, philo->philo_id + 1);
+				pthread_mutex_unlock(&philo->lock_print);
 				return(NULL);
 			}
+			// if(philo->total_nbr_of_meals == 0)
+			// 	exit(1);
 		}
+		if (ft_cnt_of_meals(args))
+			return (NULL);
 	}
 	return(NULL);
 }
@@ -192,44 +288,43 @@ void ft_end_threads(t_arg *args)
 		pthread_join(args->tids[nbr_ph], NULL);
 }
 
-void ft_init_args(t_arg *args, int argc, char **argv)
+int ft_init_args(t_arg *args, int argc, char **argv)
 {
+	if (ft_is_digit(argv) != 0)
+		return (1);
 	args->nbr_philo = ft_atoi(argv[1]);
-	if (args->nbr_philo == 0)
-		return ;
 	args->time_to_die = ft_atoi(argv[2]);
 	args->time_to_eat = ft_atoi(argv[3]);
 	args->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		args->nbr_of_meals = ft_atoi(argv[5]);
-	return ;
-}
-
-int	ft_check_args(int argc)
-{
-	if (argc < 5 || argc > 6)
+	if (argc == 5)
 	{
-		printf(" ____________________________________________________ \n");
-		printf("|            Please enter 4 or 5 arguments           |\n");
-		printf("|____________________________________________________|\n");
-		printf("|             [1][Number of philosophers]            |\n");
-		printf("|             [2][Time to die]                       |\n");
-		printf("|             [3][Time to eat]                       |\n");
-		printf("|             [4][Time to sleep]                     |\n");
-		printf("|             [5][Number of meals]                   |\n");
-		printf("|____________________________________________________|\n");
-		return (0);
+		if (args->nbr_philo < 1)
+			return (0);
+		args->nbr_of_meals= -1;
 	}
-	return(1);
-
+	if (argc == 6)
+	{
+		if (args->nbr_of_meals < 1)
+			return (0);
+	}
+	return (0);
 }
 
 int main(int argc, char **argv)
 {
 	t_arg	args;
 
-	ft_check_args(argc);
-	ft_init_args(&args, argc, argv);
+	if (argc < 5 || argc > 6)
+	{
+		ft_check_args();
+		return (0);
+	}
+	if (ft_init_args(&args, argc, argv) == 1)
+	{
+		return 1;
+	}
 	ft_init_mutex(&args);
 	ft_init_philosophers(&args);
 	ft_init_threads(&args);
