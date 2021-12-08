@@ -161,7 +161,8 @@ void	eating(t_philo *philo)
 	philo->total_nbr_of_meals += 1;
 	if (philo->total_nbr_of_meals == philo->total_nbr_of_meals_1)
 		philo->stop = 1;
-	//printf("NBR_MEALS IS %d\n", philo->total_nbr_of_meals_1);
+	//printf("NBR_MEALS IS %d\n", philo->total_nbr_of_meals);
+	//printf("NBR_MEALS_MU %d\n", philo->total_nbr_of_meals_1);
 	philo->time_of_last_meal = ft_time();
 	ft_usleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->l_f);
