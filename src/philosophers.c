@@ -65,28 +65,6 @@ void	ft_check_args(void)
 	printf("|____________________________________________________|\n");
 }
 
-void	ft_clear(t_arg *args)
-{
-	int	i;
-
-	i = -1;
-	while (++i < args->nbr_philo)
-	{
-		pthread_mutex_destroy(args->all_philos[i].l_f);
-		i++;
-	}
-	pthread_mutex_destroy(&args->lock_print);
-	free(args->all_philos);
-}
-
-int	ft_exit(t_arg *args, int exit_code)
-{
-	if (exit_code == 1)
-		return(1);
-	ft_check_args();
-	return(0);
-}
-
 void	ft_usleep(int ms)
 {
 	long	time;
@@ -193,12 +171,6 @@ void	eating(t_philo *philo)
 	printf("%ld %d is eating\n", ft_time() - philo->start_time, philo->philo_id + 1);
 	pthread_mutex_unlock(&philo->lock_print);
 	philo->total_nbr_of_meals += 1;
-	// if (philo->total_nbr_of_meals == philo->total_nbr_of_meals_1)
-	// {
-	// 	philo->stop = 1;
-	// 	pthread_mutex_unlock(philo->l_f);
-	// 	pthread_mutex_unlock(philo->r_f);
-	// }
 	philo->time_of_last_meal = ft_time();
 	ft_usleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->l_f);
@@ -230,7 +202,6 @@ int ft_cnt_of_meals(t_philo *philo)
 		i = -1;
 		while(++i < philo->nbr_philo)
 		{
-			//printf("%d NBR_ %d\n", i ,philo[i].total_nbr_of_meals);
 			if(philo[i].total_nbr_of_meals < philo->total_nbr_of_meals_1)
 				flag_enough = 0;
 		}
@@ -238,9 +209,7 @@ int ft_cnt_of_meals(t_philo *philo)
 		{
 			i = -1;
 			while(++i < philo->nbr_philo)
-			{
 				philo[i].stop = 1;
-			}
 			return(1);
 		}
 	}
@@ -252,7 +221,6 @@ void *ft_galina_monitor(void *args)
 	t_philo *philo;
 	int i;
 	philo = (t_philo *)args;
-	//philo->time_of_last_meal = philo->start_time = ft_time();
 	while(1)
 	{
 		i = -1;
@@ -261,13 +229,8 @@ void *ft_galina_monitor(void *args)
 			long time_now = ft_time();
 			if (time_now -  philo[i].time_of_last_meal > philo[i].limit_of_life)
 			{
-				printf("%ld LAST\n", philo[i].time_of_last_meal);
-				printf("%ld LIMIT\n", philo[i].limit_of_life);
-				printf("%ld NOW\n", time_now);
-				printf("%ld DIF\n", time_now - philo[i].time_of_last_meal);
 				pthread_mutex_lock(&philo->lock_print);
 				printf("%ld %d DIED\n", ft_time() - philo->start_time, philo->philo_id + 1);
-				//exit(0);
 				pthread_mutex_unlock(&philo->lock_print);
 				return (NULL);
 			}
@@ -286,30 +249,19 @@ void *ft_process(void *args)
 	while (1)
 	{
 		if (ft_cnt_of_meals(philo) || philo->stop)
-		{
 			return(NULL);
-		}
-
 		taking_forks(philo);
 		if (ft_cnt_of_meals(philo) || philo->stop)
-		{
 			return(NULL);
-		}
 		eating(philo);
 		if (ft_cnt_of_meals(philo) || philo->stop)
-		{
 			return(NULL);
-		}
 		sleeping(philo);
 		if (ft_cnt_of_meals(philo) || philo->stop)
-		{
 			return(NULL);
-		}
 		thinking(philo);
 		if (ft_cnt_of_meals(philo) || philo->stop)
-		{
 			return(NULL);
-		}
 	}
 	return (NULL);
 }
@@ -339,8 +291,6 @@ void ft_init_threads(t_arg *args)
 		pthread_create(&threads[nbr_ph], NULL, ft_process, (void *)&args->all_philos[nbr_ph]);
 	pthread_create(&s_tid, NULL, ft_galina_monitor, (void *)args->all_philos);
 	pthread_join(s_tid, NULL);
-	// while (++i < args->nbr_philo)
-	// 	pthread_mutex_destroy(&args[0].forks[i]);
 	args->tids = threads;
 }
 
@@ -370,7 +320,7 @@ int ft_init_args(t_arg *args, int argc, char **argv)
 	{
 		if (args->nbr_philo < 1)
 			return (0);
-		args->nbr_of_meals= -1;
+		args->nbr_of_meals = -1;
 	}
 	if (argc == 6)
 	{
