@@ -25,15 +25,32 @@ void free_all(t_arg *args)
 	free(args->forks);
 }
 
-// void 	unlock_and_destroy_mutex(t_arg *args)
-// {
+void 	unlock_and_destroy_mutex(t_arg *args)
+{
+	int nbr_ph = args->nbr_philo;
+	pthread_mutex_t	*mutex;
 
-// }
+	mutex = malloc(sizeof(pthread_mutex_t) * nbr_ph);
+	while(nbr_ph--)
+	{
+		pthread_mutex_unlock(&mutex[nbr_ph]);
+		pthread_mutex_destroy(&mutex[nbr_ph]);
+	}
+	pthread_mutex_unlock(&(*args).lock_print);
+	pthread_mutex_destroy(&(*args).lock_print);
+}
 
-// void	detach_all_threads(t_arg *args, pthread_t *threads)
-// {
+void	detach_all_threads(t_arg *args)
+{
+	int nbr_ph = args->nbr_philo;
+	pthread_t		*threads;
+	pthread_t		s_tid;
 
-// }
+	threads = malloc(sizeof(pthread_t) * nbr_ph);
+	while(nbr_ph--)
+		pthread_detach(threads[nbr_ph]);
+	pthread_detach(s_tid);
+}
 
 void	ft_check_args(void)
 {
@@ -207,10 +224,8 @@ int ft_cnt_of_meals(t_philo *philo)
 {
 	int flag_enough;
 	int i;
-	//printf("HEllo\n");
 	if (philo->total_nbr_of_meals != -1)
 	{
-		//printf("HEllo!!\n");
 		flag_enough = 1;
 		i = -1;
 		while(++i < philo->nbr_philo)
@@ -222,7 +237,7 @@ int ft_cnt_of_meals(t_philo *philo)
 		if (flag_enough == 1)
 		{
 			pthread_mutex_lock(&philo->lock_print);
-			printf ("All philosophers have eaten at least");
+			printf ("All philosophers have eaten at least  ");
 			printf (" %d times each\n", philo->total_nbr_of_meals);
 			pthread_mutex_unlock(&philo->lock_print);
 			i = -1;
@@ -257,13 +272,13 @@ void *ft_galina_monitor(void *args)
 				printf("%ld DIF\n", time_now - philo[i].time_of_last_meal);
 				pthread_mutex_lock(&philo->lock_print);
 				printf("%ld %d DIED\n", ft_time() - philo->start_time, philo->philo_id + 1);
+				//exit(0);
 				pthread_mutex_unlock(&philo->lock_print);
-				return(NULL);
+				return (NULL);
 			}
 		}
 		if (ft_cnt_of_meals(philo))
-			return(NULL);
-			// return (NULL);
+			exit(0);
 	}
 	return(NULL);
 }
@@ -283,12 +298,6 @@ void *ft_process(void *args)
 		eating(philo);
 		if (ft_cnt_of_meals(philo))
 			return(NULL);
-		// printf("#%d, philo->stop = %d\n",philo->philo_id + 1, philo->stop);
-		// if (philo->stop == 1)
-		// {
-		// 	printf("###");
-		// 	return (NULL);
-		// }
 		sleeping(philo);
 		if (ft_cnt_of_meals(philo))
 			return(NULL);
@@ -317,12 +326,15 @@ void ft_init_threads(t_arg *args)
 	pthread_t		*threads;
 	pthread_t		s_tid;
 	t_philo philo;
+	int i = -1;
 
 	threads = malloc(sizeof(pthread_t) * nbr_ph);
 	while(nbr_ph--)
 		pthread_create(&threads[nbr_ph], NULL, ft_process, (void *)&args->all_philos[nbr_ph]);
 	pthread_create(&s_tid, NULL, ft_galina_monitor, (void *)args->all_philos);
 	pthread_join(s_tid, NULL);
+	// while (++i < args->nbr_philo)
+	// 	pthread_mutex_destroy(&args[0].forks[i]);
 	args->tids = threads;
 }
 
@@ -336,7 +348,6 @@ void ft_end_threads(t_arg *args)
 		nbr_ph--;
 		pthread_join(args->tids[nbr_ph], NULL);
 	}
-	free_all(args);
 }
 
 int ft_init_args(t_arg *args, int argc, char **argv)
@@ -380,5 +391,8 @@ int main(int argc, char **argv)
 	ft_init_philosophers(&args);
 	ft_init_threads(&args);
 	ft_end_threads(&args);
+	detach_all_threads(&args);
+	unlock_and_destroy_mutex(&args);
+	free_all(&args);
 	return(0);
 }
