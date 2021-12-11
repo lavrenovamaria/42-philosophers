@@ -193,12 +193,12 @@ void	eating(t_philo *philo)
 	printf("%ld %d is eating\n", ft_time() - philo->start_time, philo->philo_id + 1);
 	pthread_mutex_unlock(&philo->lock_print);
 	philo->total_nbr_of_meals += 1;
-	if (philo->total_nbr_of_meals == philo->total_nbr_of_meals_1)
-	{
-		philo->stop = 1;
-		pthread_mutex_unlock(philo->l_f);
-		pthread_mutex_unlock(philo->r_f);
-	}
+	// if (philo->total_nbr_of_meals == philo->total_nbr_of_meals_1)
+	// {
+	// 	philo->stop = 1;
+	// 	pthread_mutex_unlock(philo->l_f);
+	// 	pthread_mutex_unlock(philo->r_f);
+	// }
 	philo->time_of_last_meal = ft_time();
 	ft_usleep(philo->time_to_eat);
 	pthread_mutex_unlock(philo->l_f);
@@ -230,21 +230,16 @@ int ft_cnt_of_meals(t_philo *philo)
 		i = -1;
 		while(++i < philo->nbr_philo)
 		{
+			//printf("%d NBR_ %d\n", i ,philo[i].total_nbr_of_meals);
 			if(philo[i].total_nbr_of_meals < philo->total_nbr_of_meals_1)
 				flag_enough = 0;
 		}
-
 		if (flag_enough == 1)
 		{
-			pthread_mutex_lock(&philo->lock_print);
-			printf ("All philosophers have eaten at least  ");
-			printf (" %d times each\n", philo->total_nbr_of_meals);
-			pthread_mutex_unlock(&philo->lock_print);
 			i = -1;
 			while(++i < philo->nbr_philo)
 			{
-				printf ("philosopher %d", philo[i].philo_id + 1);
-				printf (" total eat = %d\n", philo[i].total_nbr_of_meals);
+				philo[i].stop = 1;
 			}
 			return(1);
 		}
@@ -277,8 +272,8 @@ void *ft_galina_monitor(void *args)
 				return (NULL);
 			}
 		}
-		if (ft_cnt_of_meals(philo))
-			exit(0);
+		if (ft_cnt_of_meals(philo) || philo->stop)
+			return(NULL);
 	}
 	return(NULL);
 }
@@ -290,20 +285,31 @@ void *ft_process(void *args)
 	philo->time_of_last_meal = philo->start_time = ft_time();
 	while (1)
 	{
-		if (ft_cnt_of_meals(philo))
+		if (ft_cnt_of_meals(philo) || philo->stop)
+		{
 			return(NULL);
+		}
+
 		taking_forks(philo);
-		if (ft_cnt_of_meals(philo))
+		if (ft_cnt_of_meals(philo) || philo->stop)
+		{
 			return(NULL);
+		}
 		eating(philo);
-		if (ft_cnt_of_meals(philo))
+		if (ft_cnt_of_meals(philo) || philo->stop)
+		{
 			return(NULL);
+		}
 		sleeping(philo);
-		if (ft_cnt_of_meals(philo))
+		if (ft_cnt_of_meals(philo) || philo->stop)
+		{
 			return(NULL);
+		}
 		thinking(philo);
-		if (ft_cnt_of_meals(philo))
+		if (ft_cnt_of_meals(philo) || philo->stop)
+		{
 			return(NULL);
+		}
 	}
 	return (NULL);
 }
