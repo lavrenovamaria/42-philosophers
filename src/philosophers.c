@@ -229,8 +229,11 @@ void *ft_galina_monitor(void *args)
 			long time_now = ft_time();
 			if (time_now -  philo[i].time_of_last_meal > philo[i].limit_of_life)
 			{
+				i = -1;
+				while(++i < philo->nbr_philo)
+					philo[i].stop = 1;
 				pthread_mutex_lock(&philo->lock_print);
-				printf("%ld %d DIED\n", ft_time() - philo->start_time, philo->philo_id + 1);
+				printf("%ld %d is died\n", ft_time() - philo->start_time, philo->philo_id + 1);
 				pthread_mutex_unlock(&philo->lock_print);
 				return (NULL);
 			}
