@@ -7,6 +7,7 @@ long	ft_time(void)
 
 	gettimeofday(&tv, NULL);
 	res = 1000 * (size_t)tv.tv_sec + (size_t)tv.tv_usec / 1000;
+	//printf("%ld SEC %d USEC\n", tv.tv_sec, tv.tv_usec);
 	return (res);
 }
 
@@ -196,15 +197,13 @@ int ft_cnt_of_meals(t_philo *philo)
 {
 	int flag_enough;
 	int i;
-	if (philo->total_nbr_of_meals != -1)
+	if (philo->total_nbr_of_meals != -1 && philo->total_nbr_of_meals_1 > 0)
 	{
 		flag_enough = 1;
 		i = -1;
 		while(++i < philo->nbr_philo)
-		{
 			if(philo[i].total_nbr_of_meals < philo->total_nbr_of_meals_1)
 				flag_enough = 0;
-		}
 		if (flag_enough == 1)
 		{
 			i = -1;
@@ -233,13 +232,13 @@ void *ft_galina_monitor(void *args)
 				while(++i < philo->nbr_philo)
 					philo[i].stop = 1;
 				pthread_mutex_lock(&philo->lock_print);
-				printf("%ld %d is died\n", ft_time() - philo->start_time, philo->philo_id + 1);
+				printf("%ld %d died\n", ft_time() - philo->start_time, philo->philo_id + 1);
 				pthread_mutex_unlock(&philo->lock_print);
 				return (NULL);
 			}
 		}
 		if (ft_cnt_of_meals(philo) || philo->stop)
-			return(NULL);
+			return(NULL); //exit(0);
 	}
 	return(NULL);
 }
@@ -301,7 +300,6 @@ void ft_end_threads(t_arg *args)
 {
 	int nbr_ph = args->nbr_philo;
 
-	nbr_ph = args->nbr_philo;
 	while(nbr_ph)
 	{
 		nbr_ph--;
