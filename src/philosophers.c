@@ -29,13 +29,11 @@ void free_all(t_arg *args)
 void 	unlock_and_destroy_mutex(t_arg *args)
 {
 	int nbr_ph = args->nbr_philo;
-	pthread_mutex_t	*mutex;
 
-	mutex = malloc(sizeof(pthread_mutex_t) * nbr_ph);
 	while(nbr_ph--)
 	{
-		pthread_mutex_unlock(&mutex[nbr_ph]);
-		pthread_mutex_destroy(&mutex[nbr_ph]);
+		pthread_mutex_unlock(&args->forks[nbr_ph]);
+		pthread_mutex_destroy(&args->forks[nbr_ph]);
 	}
 	pthread_mutex_unlock(&(*args).lock_print);
 	pthread_mutex_destroy(&(*args).lock_print);
@@ -318,7 +316,10 @@ void ft_init_threads(t_arg *args)
 void ft_end_threads(t_arg *args)
 {
 	int nbr_ph = args->nbr_philo;
-
+	if(nbr_ph == 1)
+	{
+		pthread_mutex_unlock(&args->forks[0]);
+	}
 	while(nbr_ph)
 	{
 		nbr_ph--;
@@ -368,7 +369,7 @@ int main(int argc, char **argv)
 	ft_init_philosophers(&args);
 	ft_init_threads(&args);
 	ft_end_threads(&args);
-	detach_all_threads(&args);
+	//detach_all_threads(&args);
 	unlock_and_destroy_mutex(&args);
 	free_all(&args);
 	return(0);
