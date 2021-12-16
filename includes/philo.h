@@ -38,6 +38,7 @@ typedef struct		s_arg
 	int				time_to_die; //arg2
 	int				time_to_eat; //arg3
 	int				time_to_sleep; //arg4
+	int				dead;//true if philosopher ate time_of_last_meal arg5
 	int				nbr_of_meals; //!!!!!!!!
 	pthread_mutex_t	*forks;
 	pthread_t		*tids;//id of the threads //start time in milliseconds
