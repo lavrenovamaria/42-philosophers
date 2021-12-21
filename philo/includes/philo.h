@@ -46,4 +46,7 @@ typedef struct		s_arg
 	t_philo			*all_philos;
 }					t_arg;
 
+
+
+
 #endif

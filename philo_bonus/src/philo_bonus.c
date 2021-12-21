@@ -130,7 +130,7 @@ void	*ft_routine(void *args)
 void	*ft_eating_checker(void *arg)
 {
 	t_arg *args;
-	size_t	i;
+	int	i;
 
 	args = arg;
 	i = 0;
@@ -256,7 +256,7 @@ int ft_init_args(t_arg *args, int argc, char **argv)
 
 static void	ft_kill_philosophers(t_arg *args)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
 	while (i < args->nbr_philo)

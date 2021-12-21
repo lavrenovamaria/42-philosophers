@@ -213,7 +213,7 @@ int ft_cnt_of_meals(t_philo *philo)
 void *ft_galina_monitor(void *args)
 {
 	t_philo *philo;
-	int i;
+	int i = 0;
 	philo = (t_philo *)args;
 	while(philo[i].stop == 0)
 	{
@@ -284,8 +284,6 @@ void ft_init_threads(t_arg *args)
 	int nbr_ph = args->nbr_philo;
 	pthread_t		*threads;
 	pthread_t		s_tid;
-	t_philo philo;
-	int i = -1;
 
 	threads = malloc(sizeof(pthread_t) * nbr_ph);
 	while(nbr_ph--)
