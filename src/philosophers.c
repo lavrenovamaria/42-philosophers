@@ -7,7 +7,6 @@ long	ft_time(void)
 
 	gettimeofday(&tv, NULL);
 	res = 1000 * (size_t)tv.tv_sec + (size_t)tv.tv_usec / 1000;
-	//printf("%ld SEC %d USEC\n", tv.tv_sec, tv.tv_usec);
 	return (res);
 }
 
@@ -37,18 +36,6 @@ void 	unlock_and_destroy_mutex(t_arg *args)
 	}
 	pthread_mutex_unlock(&(*args).lock_print);
 	pthread_mutex_destroy(&(*args).lock_print);
-}
-
-void	detach_all_threads(t_arg *args)
-{
-	int nbr_ph = args->nbr_philo;
-	pthread_t		*threads;
-	pthread_t		s_tid;
-
-	threads = malloc(sizeof(pthread_t) * nbr_ph);
-	while(nbr_ph--)
-		pthread_detach(threads[nbr_ph]);
-	pthread_detach(s_tid);
 }
 
 void	ft_check_args(void)
@@ -147,20 +134,15 @@ void	taking_forks(t_philo *philo)
 {
 	if((philo->philo_id) % 2 == 0 && philo->philo_id + 1 != philo->nbr_philo)
 	{
-		//printf("%d:0\n", philo->philo_id + 1);
-
 		pthread_mutex_lock(philo->r_f);
 		pthread_mutex_lock(philo->l_f);
 		pthread_mutex_lock(&philo->lock_print);
-		//printf("%d:1\n", philo->philo_id + 1);
 		if(philo->stop != 1)
 		{
 			printf("%ld %d has taken a fork\n", ft_time()- philo->start_time, philo->philo_id + 1);
 			printf("%ld %d has taken a fork\n", ft_time()- philo->start_time, philo->philo_id + 1);
 		}
-		//printf("%d:2\n", philo->philo_id + 1);
 		pthread_mutex_unlock(&philo->lock_print);
-		//printf("%d:3\n", philo->philo_id + 1);
 	}
 	else
 	{
@@ -233,7 +215,7 @@ void *ft_galina_monitor(void *args)
 	t_philo *philo;
 	int i;
 	philo = (t_philo *)args;
-	while(1)
+	while(philo[i].stop == 0)
 	{
 		i = -1;
 		while(++i < philo->nbr_philo)
@@ -369,7 +351,6 @@ int main(int argc, char **argv)
 	ft_init_philosophers(&args);
 	ft_init_threads(&args);
 	ft_end_threads(&args);
-	//detach_all_threads(&args);
 	unlock_and_destroy_mutex(&args);
 	free_all(&args);
 	return(0);
