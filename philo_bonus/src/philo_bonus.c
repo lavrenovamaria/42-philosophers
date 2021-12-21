@@ -87,16 +87,16 @@ int	ft_is_digit(char **argv)
 void	ft_taking_forks_eating(t_arg *args)
 {
 	sem_wait(args->fork_sem);
-	sem_wait(args->write_sem);
-	printf("%ld %lu has taken a fork\n", ft_time()- args->start_time, args->philo.philo_ind + 1);
-	sem_post(args->write_sem);
 	sem_wait(args->fork_sem);
 	sem_wait(args->write_sem);
 	printf("%ld %lu has taken a fork\n", ft_time()- args->start_time, args->philo.philo_ind + 1);
+	printf("%ld %lu has taken a fork\n", ft_time()- args->start_time, args->philo.philo_ind + 1);
+	sem_post(args->write_sem);
+	sem_wait(args->write_sem);
 	printf("%ld %lu is eating\n", ft_time() - args->start_time, args->philo.philo_ind + 1);
 	sem_post(args->write_sem);
-	args->philo.total_nbr_of_meals += 1;
 	args->philo.time_of_last_meal = ft_time();
+	args->philo.total_nbr_of_meals += 1;
 	ft_usleep(args->time_to_eat);
 	sem_post(args->fork_sem);
 	sem_post(args->fork_sem);
@@ -117,6 +117,7 @@ void	*ft_routine(void *args)
 {
 	t_arg	*philo;
 	philo = (t_arg *)args;
+	philo->start_time = ft_time();
 	while (1)
 	{
 		//sem_wait(args->philo.actions);
@@ -131,20 +132,45 @@ void	*ft_eating_checker(void *arg)
 {
 	t_arg *args;
 	int	i;
-
 	args = arg;
-	i = 0;
+	i = -1;
 	sem_wait(args->write_sem);
-	while (i < args->nbr_philo)
+	while (++i < args->nbr_philo)
 	{
 		sem_post(args->write_sem);
 		sem_wait(args->eat_enough);
 		sem_wait(args->write_sem);
-		i++;
 	}
 	sem_post(args->stop);
 	return (NULL);
 }
+
+// int ft_cnt_of_meals(void *arg)
+// {
+// 	t_arg *args;
+// 	args = arg;
+// 	int flag_enough;
+// 	int i = 0;;
+// 	if (args->philo.total_nbr_of_meals != -1 && args->nbr_of_meals > 0)
+// 	{
+// 		flag_enough = 1;
+// 		i = -1;
+// 		while(++i < args->nbr_philo)
+// 			if(args->philo[i].total_nbr_of_meals < args->nbr_of_meals)
+// 				flag_enough = 0;
+// 		if (flag_enough == 1)
+// 		{
+// 			i = -1;
+// 			while(i < args->philo[i].nbr_philo)
+// 			{
+// 				args->philo[i].stop = 1;
+// 				i++;
+// 			}
+// 			return(1);
+// 		}
+// 	}
+// 	return(0);
+// }
 
 void	*ft_death_checker(void *arg)
 {
@@ -158,7 +184,7 @@ void	*ft_death_checker(void *arg)
 		if (time_now - args->philo.time_of_last_meal > args->time_to_die)
 		{
 			sem_wait(args->write_sem);
-			printf("%ld %lu died\n", ft_time()- args->start_time, args->philo.philo_ind + 1);
+			printf("%ld %lu died\n", ft_time() - args->start_time, args->philo.philo_ind + 1);
 			sem_post(args->stop);
 		}
 		//sem_post(args->philo.actions);
@@ -168,11 +194,13 @@ void	*ft_death_checker(void *arg)
 
 void	ft_init_philo(t_arg *args)
 {
-	args->philo.time_of_last_meal = args->start_time;
-	sem_unlink("fork_sem");
-	sem_unlink("write_sem");
-	sem_unlink("stop");
-	sem_unlink("eat_enough");
+	//args->philo.time_of_last_meal = args->start_time;
+	args->philo.time_of_last_meal = ft_time();
+	if (pthread_create(&args->galina_tid, NULL, &ft_death_checker, args))
+	{
+		printf("Error pthread");
+		sem_post(args->stop);
+	}
 	pthread_create(&args->galina_tid, NULL, &ft_death_checker, args);
 	pthread_detach(args->galina_tid);
 }
@@ -193,8 +221,15 @@ static int	ft_init_sempahore(t_arg *args)
 
 static int	ft_init_galina(t_arg *args)
 {
-	pthread_create(&args->galina_tid, NULL, &ft_eating_checker, args);
-	pthread_detach(args->galina_tid);
+	if (args->nbr_of_meals)
+	{
+		if (pthread_create(&args->galina_tid, NULL, &ft_eating_checker, args))
+		{
+			printf("Error pthread");
+			return (1);
+		}
+		pthread_detach(args->galina_tid);
+	}
 	return (0);
 }
 
