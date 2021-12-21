@@ -97,6 +97,8 @@ void	ft_taking_forks_eating(t_arg *args)
 	sem_post(args->write_sem);
 	args->philo.time_of_last_meal = ft_time();
 	args->philo.total_nbr_of_meals += 1;
+	if (args->philo.total_nbr_of_meals == args->nbr_of_meals)
+			sem_post(args->eat_enough);
 	ft_usleep(args->time_to_eat);
 	sem_post(args->fork_sem);
 	sem_post(args->fork_sem);
@@ -120,11 +122,9 @@ void	*ft_routine(void *args)
 	philo->start_time = ft_time();
 	while (1)
 	{
-		//sem_wait(args->philo.actions);
 		ft_taking_forks_eating(philo);
 		ft_sleeping_thinking(philo);
 	}
-	//sem_post(args->philo.actions);
 	return (NULL);
 }
 
@@ -145,33 +145,6 @@ void	*ft_eating_checker(void *arg)
 	return (NULL);
 }
 
-// int ft_cnt_of_meals(void *arg)
-// {
-// 	t_arg *args;
-// 	args = arg;
-// 	int flag_enough;
-// 	int i = 0;;
-// 	if (args->philo.total_nbr_of_meals != -1 && args->nbr_of_meals > 0)
-// 	{
-// 		flag_enough = 1;
-// 		i = -1;
-// 		while(++i < args->nbr_philo)
-// 			if(args->philo[i].total_nbr_of_meals < args->nbr_of_meals)
-// 				flag_enough = 0;
-// 		if (flag_enough == 1)
-// 		{
-// 			i = -1;
-// 			while(i < args->philo[i].nbr_philo)
-// 			{
-// 				args->philo[i].stop = 1;
-// 				i++;
-// 			}
-// 			return(1);
-// 		}
-// 	}
-// 	return(0);
-// }
-
 void	*ft_death_checker(void *arg)
 {
 	t_arg *args;
@@ -180,14 +153,13 @@ void	*ft_death_checker(void *arg)
 	while (1)
 	{
 		long time_now = ft_time();
-		//sem_wait(args->philo.actions);
 		if (time_now - args->philo.time_of_last_meal > args->time_to_die)
 		{
 			sem_wait(args->write_sem);
 			printf("%ld %lu died\n", ft_time() - args->start_time, args->philo.philo_ind + 1);
 			sem_post(args->stop);
+			exit(0);
 		}
-		//sem_post(args->philo.actions);
 	}
 	return (NULL);
 }
@@ -201,7 +173,7 @@ void	ft_init_philo(t_arg *args)
 		printf("Error pthread");
 		sem_post(args->stop);
 	}
-	pthread_create(&args->galina_tid, NULL, &ft_death_checker, args);
+	//pthread_create(&args->galina_tid, NULL, &ft_death_checker, args);
 	pthread_detach(args->galina_tid);
 }
 
@@ -256,6 +228,7 @@ int	ft_start_philo(t_arg *args)
 		}
 		i++;
 	}
+	//waitpid(-1, &i, 0);
 	sem_wait(args->stop);
 	return (0);
 }
@@ -321,9 +294,14 @@ int	main(int argc, char **argv)
 	}
 	if (ft_init_args(&args, argc, argv) == 1)
 	{
-		return 1;
+		ft_free_args(&args);
+		return (1);
 	}
-	ft_start_philo(&args);
+	if(ft_start_philo(&args))
+	{
+		ft_free_args(&args);
+		return (1);
+	}
 	ft_kill_philosophers(&args);
 	ft_free_args(&args);
 	return(0);
