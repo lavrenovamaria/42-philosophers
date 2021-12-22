@@ -84,24 +84,15 @@ int	ft_atoi(const char *str)
 	return (res * i);
 }
 
-int	ft_is_digit(char **argv)
+int	ft_is_digit(char *str)
 {
-	int	i;
-	int	j;
-
-	i = 1;
-	while (argv[i])
+	while (*str)
 	{
-		j = 0;
-		while (argv[i][j])
-		{
-			if (argv[i][j] < 48 || argv[i][j] > 57)
-				return (1);
-			j++;
-		}
-		i++;
+		if (!('0' <= *str && *str <= '9'))
+			return (0);
+		str++;
 	}
-	return (0);
+	return (1);
 }
 
 void ft_init_philosophers(t_arg *args)
@@ -309,8 +300,6 @@ void ft_end_threads(t_arg *args)
 
 int ft_init_args(t_arg *args, int argc, char **argv)
 {
-	if (ft_is_digit(argv) != 0)
-		return (1);
 	args->nbr_philo = ft_atoi(argv[1]);
 	args->time_to_die = ft_atoi(argv[2]);
 	args->time_to_eat = ft_atoi(argv[3]);
@@ -332,19 +321,36 @@ int ft_init_args(t_arg *args, int argc, char **argv)
 	return (0);
 }
 
-int main(int argc, char **argv)
+static int	ft_check_valid(int argc, char **argv)
 {
-	t_arg	args;
+	size_t	i;
 
 	if (argc < 5 || argc > 6)
 	{
 		ft_check_args();
-		return (0);
+		return (1);
 	}
-	if (ft_init_args(&args, argc, argv) == 1)
+	i = 1;
+	while (argv[i])
 	{
-		return 1;
+		if (!ft_is_digit(argv[i]) || (!ft_atoi(argv[i])))
+		{
+			printf("Invalid argument\n");
+			return (1);
+		}
+		i++;
 	}
+	return (0);
+}
+
+int main(int argc, char **argv)
+{
+	t_arg	args;
+
+	if (ft_check_valid(argc, argv))
+		return 1;
+	if (ft_init_args(&args, argc, argv) == 1)
+		return 1;
 	ft_init_mutex(&args);
 	ft_init_philosophers(&args);
 	ft_init_threads(&args);

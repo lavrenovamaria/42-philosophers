@@ -6,7 +6,7 @@ SRC		=	src/philo_bonus.c\
 
 CC 		= gcc
 
-FLAGS	= -Wall -Wextra -Werror
+FLAGS	= -Wall -Wextra -Werror -pthread
 
 OBJS 	= $(SRC:.c=.o)
 
