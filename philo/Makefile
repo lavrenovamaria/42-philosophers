@@ -7,6 +7,7 @@ SRC		=	src/philo.c\
 			src/init.c\
 			src/actions.c\
 			src/time_libc.c\
+			src/process.c\
 
 CC 		= gcc
 
