@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo_bonus.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: wrickard <wrickard@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/23 21:52:48 by wrickard          #+#    #+#             */
+/*   Updated: 2021/12/23 21:52:49 by wrickard         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
 
@@ -41,5 +53,17 @@ typedef struct s_arg
 	t_philo		philo;
 
 }				t_arg;
+
+void	ft_taking_forks_eating(t_arg *args);
+void	ft_sleeping_thinking(t_arg *args);
+void	*ft_routine(void *args);
+void	*ft_eating_checker(void *arg);
+void	*ft_death_checker(void *arg);
+int		ft_init_args(t_arg *args, int argc, char **argv);
+void	ft_init_philo(t_arg *args);
+long	ft_time(void);
+void	ft_usleep(int ms);
+int		ft_atoi(const char *str);
+int		ft_is_digit(char *str);
 
 #endif

@@ -3,6 +3,9 @@ NAME = philo
 INC 	= includes/philo_bonus.h
 
 SRC		=	src/philo_bonus.c\
+			src/actions.c\
+			src/init.c\
+			src/time_libc.c\
 
 CC 		= gcc
 

@@ -3,6 +3,10 @@ NAME = philo
 INC 	= includes/philo.h
 
 SRC		=	src/philo.c\
+			src/free_destroy.c\
+			src/init.c\
+			src/actions.c\
+			src/time_libc.c\
 
 CC 		= gcc
 
