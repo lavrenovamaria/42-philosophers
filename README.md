@@ -8,7 +8,7 @@ For example, N philosophers are sitting at a round table and eating. A fork is p
 
 The philosopher repeats three actions: \
 `eating ➔ sleeping ➔ thinking`.
-When eating, both forks should be used.
+When eating, both forks should be used. 
 If you lift both forks, eat for a certain amount of time.
 When you're done eating, put down your fork.
 Not a single philosopher should die due to lack of food for a certain period of time.
