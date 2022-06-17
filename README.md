@@ -4,7 +4,7 @@ Dining philosophers problem is a problem created by Edsger Wybe Dijkstra in 1965
 Subject is presented in the [en.subject.pdf](https://github.com/lavrenovamaria/42-philosophers/files/7378771/en.subject.pdf)
 
 
-For example, N philosophers are sitting at a round table and eating. A fork is placed between the philosophers, and the philosophers eat through the following process.
+For example, N philosophers are sitting at a round table and eating. A fork is placed between the philosophers, and the philosophers eat through the following process. 
 
 The philosopher repeats three actions: \
 `eating ➔ sleeping ➔ thinking`.
