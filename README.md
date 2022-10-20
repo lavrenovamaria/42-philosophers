@@ -7,7 +7,7 @@ Subject is presented in the [en.subject.pdf](https://github.com/lavrenovamaria/4
 For example, N philosophers are sitting at a round table and eating. A fork is placed between the philosophers, and the philosophers eat through the following process. 
 
 The philosopher repeats three actions: \
-`eating ➔ sleeping ➔ thinking`.
+`eating ➔ sleeping ➔ thinking`. 
 When eating, both forks should be used. 
 If you lift both forks, eat for a certain amount of time. 
 When you're done eating, put down your fork.
